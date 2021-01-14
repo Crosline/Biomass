@@ -293,7 +293,6 @@ THREE.PlayerControls = function ( camera, player, domElement ) {
 		}
 		
 		if (keyState[32] ) {
-			playerIsMoving = true;
 			playerIsJumping = true;
 			
 		}
