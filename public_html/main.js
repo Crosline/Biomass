@@ -6,12 +6,11 @@ var container, scene, camera, renderer;
 
 var controls;
 
-var sphere, player, building;
+var sphere, player;
 
 const objects = [];
 
 var player = new THREE.Object3D();
-var building = new THREE.Object3D();
 
 const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
 
@@ -89,7 +88,7 @@ function init() {
     loadApartment(10,30,1,2);
     loadApartment(10,50,1,3);
     loadApartment(30,30,1,4);
-    loadApartment(50,50,1,15);
+    loadApartment(50,50,2,15);
    
    
    objectLoader('obj/trash/bottle1.mtl', 'obj/trash/bottle1.obj', 0, 5);
@@ -158,7 +157,7 @@ function onWindowResize() {
 
 }
 
-function loadApartment(x=0, z=0, type = 1, floor = 1, y = 0){
+function loadApartment(x=0, z=0, type = 1, floor = 1, y = 0.0){
     
     type = type.toString();
     
@@ -166,15 +165,15 @@ function loadApartment(x=0, z=0, type = 1, floor = 1, y = 0){
     
     var i = 1;
     for (; i < floor; i++)
-        objectLoader('obj/apartment/'+type+'/mid.mtl', 'obj/apartment/'+type+'/mid.obj', x, z, y + 3 * i);
+        objectLoader('obj/apartment/'+type+'/mid.mtl', 'obj/apartment/'+type+'/mid.obj', x, z, y + 3.417 * i);
     
-    objectLoader('obj/apartment/'+type+'/top.mtl', 'obj/apartment/'+type+'/top.obj', x, z, y + 3 * floor);
+    objectLoader('obj/apartment/'+type+'/top.mtl', 'obj/apartment/'+type+'/top.obj', x, z, y + 3.417 * floor);
 
     }
 
 
 
-function objectLoader(mtlUrl, objUrl, x, z, y = 0, draggable = false, rotation = -1){
+function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation = -1){
     
     //if we wanna use obj outside and they aren't static, we can add it to a list or smth.
     

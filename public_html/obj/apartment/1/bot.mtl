@@ -1,7 +1,7 @@
 # Blender MTL File: 'None'
 # Material Count: 4
 
-newmtl dark-brick.008
+newmtl dark-brick.006
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.208637 0.208637 0.208637
@@ -11,7 +11,7 @@ Ni 1.000000
 d 1.000000
 illum 2
 
-newmtl glass.006
+newmtl glass.007
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.182214 0.559602 0.559602
@@ -21,7 +21,7 @@ Ni 1.450000
 d 1.000000
 illum 2
 
-newmtl light-brick.008
+newmtl light-brick.009
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.412543 0.412543 0.412543
@@ -31,7 +31,7 @@ Ni 1.000000
 d 1.000000
 illum 2
 
-newmtl wood.006
+newmtl wood.003
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.332452 0.078187 0.019382
