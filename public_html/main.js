@@ -7,9 +7,11 @@ var container, scene, camera, renderer;
 
 var controls;
 
-var sphere, player;
-
+var sphere;
+var control_target = new THREE.Object3D();
 var player = new THREE.Object3D();
+var truck = new THREE.Object3D();
+var control_target = player;
 
 init();
 animate();
@@ -72,14 +74,21 @@ function init() {
     const mtlLoader = new MTLLoader();
     mtlLoader.load('obj/character/character.mtl', function (materials) {
         materials.preload();
+        
         const objLoaderExample = new OBJLoader();
         objLoaderExample.setMaterials(materials);
         objLoaderExample.load('obj/character/character.obj',
-                function (object) {
-                    player.add(object);
+                (root) => {
+                    root.rotation.y = Math.PI * -1;
+                    player.add(root);
                 });
     });
-
+    
+    const objLoader = new OBJLoader();
+    objLoader.load('obj/vehicle/truck.obj', (root) => {
+        root.rotation.y = Math.PI * -1;
+        truck.add(root);
+    });
 
     // loading only character object without its material
     /*
@@ -91,13 +100,13 @@ function init() {
      //scene.add(root);
      });
      */
-
     //
     player.position.x = 0;
-    //player.rotation.y += Math.PI * 0.5;
+    //player.rotation.y += Math.PI * -1;
     scene.add(player);
-
-    controls = new THREE.PlayerControls(camera, player);
+    scene.add(truck);
+    //controls = new THREE.PlayerControls(camera, player);
+    controls = new THREE.PlayerControls(camera, control_target);
     controls.init();
 
     // Events
@@ -113,14 +122,19 @@ function animate() {
     requestAnimationFrame(animate);
 
     controls.update();
-
+    
     render();
 }
 
 function render() {
     // Render Scene
     renderer.clear();
+    controls = new THREE.PlayerControls(camera, control_target);
+    controls.init();
     renderer.render(scene, camera);
+    
+    
+    
 }
 
 function onWindowResize() {
@@ -130,3 +144,15 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
 }
+
+document.addEventListener('keydown', function(event) {
+    if(event.keyCode == 70) {
+        if(control_target == player){
+            control_target = truck;
+            console.log(control_target);
+        }  
+        else
+            control_target = player;
+    }
+    }, true);
+    
