@@ -9,7 +9,7 @@ var controls;
 var sphere, player;
 
 const objects = [];
-
+const collidableObjects = [];
 
 var player = new THREE.Object3D();
 
@@ -24,7 +24,7 @@ const rays = [
     new THREE.Vector3(-1, 0, 0),
     new THREE.Vector3(-1, 0, 1)
   ];
-const distance = 0.5
+const distance = 1
 init();
 update();
 
@@ -149,25 +149,50 @@ function update() {
     //raycaster.set(player.position, new THREE.Vector3(0, 0, 1));
     //console.log(player.position);
     //const intersects = raycaster.intersectObjects(scene.children, true);
-    
+    var playerDirection = new THREE.Vector3();
+    player.getWorldDirection(playerDirection);
     for (let i = 0; i < rays.length; i += 1) {
         // We reset the raycaster to this direction
         raycaster.set(player.position, rays[i]);
         // Test if we intersect with any obstacle mesh
-        const intersects = raycaster.intersectObjects(scene.children, true);
+        const intersects = raycaster.intersectObjects(collidableObjects, true);
         // And disable that direction if we do
         if (intersects.length > 0 && intersects[0].distance <= distance) {
           // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
-          if ((i === 0 || i === 1 || i === 7) /* && player.direction.z === 1 */) {
-            console.log("+z hit")
-          } else if ((i === 3 || i === 4 || i === 5) /* && player.direction.z === -1 */) {
+          
+          if(i === 0){
+              console.log("+z hit")
+          }
+          else if ( i === 1){
+            console.log("+z+x hit")
+          }
+          
+          else if ( i === 2){
+            console.log("+x hit")
+          }
+          
+                    
+          else if ( i === 3){
+            console.log("-z+x hit")
+          }
+          
+          else if ( i === 4){
             console.log("-z hit")
           }
-          if ((i === 1 || i === 2 || i === 3) /* && player.direction.x === 1 */) {
-            console.log("+x hit")
-          } else if ((i === 5 || i === 6 || i === 7) /* && player.direction.x === -1 */) {
+          
+          else if ( i === 5){
+            console.log("-z-x hit")
+          }
+
+          else if ( i === 6){
             console.log("-x hit")
           }
+
+          else if ( i === 7){
+            console.log("-x+z hit")
+          }
+          
+
         }
         else{
             console.log("no collision");
@@ -249,6 +274,7 @@ function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation
             root.position.x = x;
             root.position.y = y;
             root.position.z = z;
+            collidableObjects.push(root);
             if (draggable)
                 objects.push(root);
             
