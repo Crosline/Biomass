@@ -87,6 +87,7 @@ function init() {
     const objLoader = new OBJLoader();
     objLoader.load('obj/vehicle/truck.obj', (root) => {
         root.rotation.y = Math.PI * -1;
+        truck.position.set(20,0,20);
         truck.add(root);
     });
 
@@ -129,8 +130,8 @@ function animate() {
 function render() {
     // Render Scene
     renderer.clear();
-    controls = new THREE.PlayerControls(camera, control_target);
-    controls.init();
+    //controls = new THREE.PlayerControls(camera, control_target);
+    //controls.init();
     renderer.render(scene, camera);
     
     
