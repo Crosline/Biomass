@@ -16,7 +16,10 @@ const collidableObjects = [];
 var collected = [];
 
 var player = new THREE.Object3D();
+
+
 var truck = new THREE.Object3D();
+
 
 const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
 var control_target = player;
@@ -27,7 +30,6 @@ function init() {
 
     // Setup
     container = document.getElementById('container');
-
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
@@ -66,7 +68,7 @@ function init() {
 
     {
         const color = 0xFFFFFF;
-        const intensity = 1;
+        const intensity = 2;
         const light = new THREE.DirectionalLight(color, intensity);
         light.position.set(0, 10, 0);
         light.target.position.set(-5, 0, 0);
@@ -169,23 +171,10 @@ function init() {
     // Drag Control
     document.addEventListener('oncontextmenu', onClick, false);
     //document.addEventListener('onmouseup', onRelease, false);
-    
-    /* SPOTLIGHT
-    spotLight = new THREE.SpotLight( 0xffffff, 1 );
-				spotLight.position.set( 15, 40, 35 );
-				spotLight.angle = Math.PI / 4;
-				spotLight.penumbra = 0.1;
-				spotLight.decay = 2;
-				spotLight.distance = 200;
 
-				spotLight.castShadow = true;
-				spotLight.shadow.mapSize.width = 512;
-				spotLight.shadow.mapSize.height = 512;
-				spotLight.shadow.camera.near = 10;
-				spotLight.shadow.camera.far = 200;
-				spotLight.shadow.focus = 1;
-				scene.add( spotLight );
-    */
+    // SPOTLIGHT
+    
+
 
 }
 
@@ -231,6 +220,7 @@ function render() {
      controls.enabled = true;
      
      */
+    
     renderer.clear();
     controls.update();
     renderer.render(scene, camera);
@@ -289,36 +279,36 @@ function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation
 document.addEventListener('keydown', function (event) {
     
     // add to collect datas
-    
-    
+
+
     /*
-    if (event.keyCode == 70) {
-        if (control_target == player)
-        {
-            control_target = truck;
-            player.visible = false;
-            player.position.x = truck.position.x;
-            player.position.y = truck.position.y;
-            player.position.z = truck.position.z;
-        } else
-        {
-            control_target = player;
-            player.visible = true;
-            player.position.x = truck.position.x - 10;
-            player.position.y = truck.position.y;
-            player.position.z = truck.position.z;
-        }
+     if (event.keyCode == 70) {
+     if (control_target == player)
+     {
+     control_target = truck;
+     player.visible = false;
+     player.position.x = truck.position.x;
+     player.position.y = truck.position.y;
+     player.position.z = truck.position.z;
+     } else
+     {
+     control_target = player;
+     player.visible = true;
+     player.position.x = truck.position.x - 10;
+     player.position.y = truck.position.y;
+     player.position.z = truck.position.z;
+     }
+     
+     controls = new THREE.PlayerControls(camera, control_target);
+     }
+     */
+}, true);
 
-        controls = new THREE.PlayerControls(camera, control_target);
-    }
-    */
- }, true);
 
-
-    function onRelease(event)
-    {
-        drag_controls.enabled = false;
-        controls.enabled = true;
+function onRelease(event)
+{
+    drag_controls.enabled = false;
+    controls.enabled = true;
 }
 
 function onClick(event) {
