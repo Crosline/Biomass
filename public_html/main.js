@@ -307,16 +307,22 @@ document.addEventListener('keydown', function (event) {
     
     // add to collect datas
     
-    
+    var targetChanged = true;
     
     if (event.keyCode == 70) {
         if (control_target == player)
         {
-            control_target = truck;
-            player.visible = false;
-            player.position.x = truck.position.x;
-            player.position.y = truck.position.y;
-            player.position.z = truck.position.z;
+            if(playerCanMountTruck()){
+                control_target = truck;
+                player.visible = false;
+                player.position.x = truck.position.x;
+                player.position.y = truck.position.y;
+                player.position.z = truck.position.z;
+            }
+            else{
+                targetChanged = false;
+            }
+
         } 
         else
         {
@@ -326,7 +332,10 @@ document.addEventListener('keydown', function (event) {
             player.position.y = truck.position.y;
             player.position.z = truck.position.z;
         }
-        controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
+        if(targetChanged){
+            controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
+
+        }
         //controls.init();
         render();
     }
@@ -389,3 +398,47 @@ function onClick(event) {
     render();
 
 }
+
+
+function playerCanMountTruck(){
+    
+	const rays = [
+		new THREE.Vector3(0, 1, 1),
+		new THREE.Vector3(1, 1, 1),
+		new THREE.Vector3(1, 1, 0),
+		new THREE.Vector3(1, 1, -1),
+		new THREE.Vector3(0, 1, -1),
+		new THREE.Vector3(-1, 1, -1),
+		new THREE.Vector3(-1, 1, 0),
+		new THREE.Vector3(-1, 1, 1)
+	  ];
+        var distance = 30;
+        var nearTruck = false;
+
+    
+		
+		
+
+		var playerDirection = new THREE.Vector3();
+		player.getWorldDirection(playerDirection);
+
+        player.worldDirection = playerDirection;
+        
+		for (let i = 0; i < rays.length; i += 1) {
+			// We reset the raycaster to this direction
+			raycaster.set(player.position, rays[i]);
+			// Test if we intersect with any obstacle mesh
+			const intersects = raycaster.intersectObjects([truck], true);
+            // And disable that direction if we do
+			if (intersects.length > 0 && intersects[0].distance <= distance) {
+			  // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
+			  
+			  nearTruck = true;
+			  
+	
+			}
+        }
+			
+        return nearTruck;
+
+    }
