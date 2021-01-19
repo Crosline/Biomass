@@ -18,6 +18,9 @@ var collected = [];
 var player = new THREE.Object3D();
 var truck = new THREE.Object3D();
 
+var spotLightPlayer;
+var spotLight;
+
 const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
 var control_target = player;
 init();
@@ -130,20 +133,29 @@ function init() {
     objectLoader('obj/character/character.mtl', 'obj/character/character.obj', -10, 15, 0, true);
 
     objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, true);
-
-
-    // loading only character object without its material
-    /*
-     const objLoader = new OBJLoader();
-     objLoader.load('obj/character/character.obj', (root) => {
-     root.scale.set(2, 2, 2);
-     root.rotation.y = Math.PI * -1;
-     player.add(root);
-     //scene.add(root);
-     });
-     */
-
-    //
+    
+    // spotlight
+    {
+        spotLight = new THREE.SpotLight(0xffffff, 1);
+        spotLight.position.set(player.position.x, player.position.y, player.position.z);
+        spotLight.angle = Math.PI / 30;
+        spotLight.penumbra = 0.1;
+        spotLight.decay = 2;
+        spotLight.distance = 200;
+        spotLight.castShadow = true;
+        spotLight.shadow.mapSize.width = 50;
+        spotLight.shadow.mapSize.height = 50;
+        spotLight.shadow.camera.near = 10;
+        spotLight.shadow.camera.far = 200;
+        spotLight.shadow.focus = 2;
+        scene.add(spotLight);
+        
+        const targetObject = spotLightPlayer;
+        scene.add(targetObject);
+        
+        spotLight.target = targetObject;
+    }
+    
     player.position.x = 0;
     //player.rotation.y += Math.PI * 0.5;
     scene.add(player);
@@ -201,23 +213,6 @@ function update() {
     // Drag Control
     document.addEventListener('oncontextmenu', onClick, false);
     //document.addEventListener('onmouseup', onRelease, false);
-    
-    /* SPOTLIGHT
-    spotLight = new THREE.SpotLight( 0xffffff, 1 );
-				spotLight.position.set( 15, 40, 35 );
-				spotLight.angle = Math.PI / 4;
-				spotLight.penumbra = 0.1;
-				spotLight.decay = 2;
-				spotLight.distance = 200;
-
-				spotLight.castShadow = true;
-				spotLight.shadow.mapSize.width = 512;
-				spotLight.shadow.mapSize.height = 512;
-				spotLight.shadow.camera.near = 10;
-				spotLight.shadow.camera.far = 200;
-				spotLight.shadow.focus = 1;
-				scene.add( spotLight );
-    */
 
 }
 
@@ -264,6 +259,8 @@ function render() {
      controls.enabled = true;
      
      */
+    spotLight.position.set(player.position.x, player.position.y + 30, player.position.z);
+    spotLight.target = player;
     renderer.clear();
     controls.update();
     renderer.render(scene, camera);
@@ -322,7 +319,13 @@ function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation
 document.addEventListener('keydown', function (event) {
     
     // add to collect datas
-    
+    if (event.keyCode === 76)
+    {
+        if (spotLight.intensity === 1)
+            spotLight.intensity = 0;
+        else if(spotLight.intensity === 0)
+            spotLight.intensity = 1;
+    }
     
     /*
     if (event.keyCode == 70) {
