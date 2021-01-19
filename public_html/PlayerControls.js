@@ -12,17 +12,17 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 	
 	this.center = new THREE.Vector3( player.position.x, player.position.y, player.position.z );
 	
-	this.moveSpeed = 0.2;
-	this.turnSpeed = 0.1;
+	this.moveSpeed = 0.1;
+	this.turnSpeed = 0.05;
 	this.gravity = 0.02;
 	this.userZoom = true;
-	this.userZoomSpeed = 1.0;
+	this.userZoomSpeed = 0.5;
 	
 	this.userRotate = true;
-	this.userRotateSpeed = 1.5;
+	this.userRotateSpeed = 0.75;
 	
 	this.autoRotate = false;
-	this.autoRotateSpeed = 0.1;
+	this.autoRotateSpeed = 0.05;
 	this.YAutoRotation = false;
 	
 	this.minPolarAngle = 0;
