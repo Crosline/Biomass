@@ -14,17 +14,7 @@ const collidableObjects = [];
 var player = new THREE.Object3D();
 
 const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
-const rays = [
-    new THREE.Vector3(0, 0, 1),
-    new THREE.Vector3(1, 0, 1),
-    new THREE.Vector3(1, 0, 0),
-    new THREE.Vector3(1, 0, -1),
-    new THREE.Vector3(0, 0, -1),
-    new THREE.Vector3(-1, 0, -1),
-    new THREE.Vector3(-1, 0, 0),
-    new THREE.Vector3(-1, 0, 1)
-  ];
-const distance = 1
+
 init();
 update();
 
@@ -131,7 +121,7 @@ function init() {
     //player.rotation.y += Math.PI * 0.5;
     scene.add(player);
 
-    controls = new THREE.PlayerControls(camera, player);
+    controls = new THREE.PlayerControls(camera, player, collidableObjects, raycaster);
     controls.init();
 
     // Events
@@ -149,56 +139,7 @@ function update() {
     //raycaster.set(player.position, new THREE.Vector3(0, 0, 1));
     //console.log(player.position);
     //const intersects = raycaster.intersectObjects(scene.children, true);
-    var playerDirection = new THREE.Vector3();
-    player.getWorldDirection(playerDirection);
-    for (let i = 0; i < rays.length; i += 1) {
-        // We reset the raycaster to this direction
-        raycaster.set(player.position, rays[i]);
-        // Test if we intersect with any obstacle mesh
-        const intersects = raycaster.intersectObjects(collidableObjects, true);
-        // And disable that direction if we do
-        if (intersects.length > 0 && intersects[0].distance <= distance) {
-          // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
-          
-          if(i === 0){
-              console.log("+z hit")
-          }
-          else if ( i === 1){
-            console.log("+z+x hit")
-          }
-          
-          else if ( i === 2){
-            console.log("+x hit")
-          }
-          
-                    
-          else if ( i === 3){
-            console.log("-z+x hit")
-          }
-          
-          else if ( i === 4){
-            console.log("-z hit")
-          }
-          
-          else if ( i === 5){
-            console.log("-z-x hit")
-          }
-
-          else if ( i === 6){
-            console.log("-x hit")
-          }
-
-          else if ( i === 7){
-            console.log("-x+z hit")
-          }
-          
-
-        }
-        else{
-            console.log("no collision");
-        }
-    
-    }
+   
     
     
     

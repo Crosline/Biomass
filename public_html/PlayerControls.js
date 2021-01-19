@@ -1,8 +1,9 @@
 
-THREE.PlayerControls = function ( camera, player, domElement ) {
+THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, domElement ) {
 	
 	this.camera = camera;
 	this.player = player;
+	this.raycaster = raycaster;
 	this.domElement = ( domElement !== undefined ) ? domElement : document;
 	
 	// API
@@ -29,6 +30,8 @@ THREE.PlayerControls = function ( camera, player, domElement ) {
 	
 	this.minDistance = 0;
 	this.maxDistance = Infinity;
+
+	this.player.hitDirection = [];
 	
 	// internals
 	
@@ -58,6 +61,18 @@ THREE.PlayerControls = function ( camera, player, domElement ) {
 	var STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2 };
 	var state = STATE.NONE;
 	
+
+	const rays = [
+		new THREE.Vector3(0, 0, 1),
+		new THREE.Vector3(1, 0, 1),
+		new THREE.Vector3(1, 0, 0),
+		new THREE.Vector3(1, 0, -1),
+		new THREE.Vector3(0, 0, -1),
+		new THREE.Vector3(-1, 0, -1),
+		new THREE.Vector3(-1, 0, 0),
+		new THREE.Vector3(-1, 0, 1)
+	  ];
+	const distance = 0.5
 	// events
 	
 	var changeEvent = { type: 'change' };
@@ -147,6 +162,13 @@ THREE.PlayerControls = function ( camera, player, domElement ) {
 	this.update = function() { 
 		
 		this.checkKeyStates();
+		console.log();
+		getCollision(this.player, this.raycaster);
+		
+		console.log("Player can move forward: " + playerCanMove("forward", this.player));
+		console.log("Player can move backward: " + playerCanMove("backward", this.player));
+		console.log("Player can move left: " + playerCanMove("left", this.player));
+		console.log("Player can move right: " + playerCanMove("right", this.player));
 		
 		this.center = this.player.position;
 		
@@ -228,25 +250,37 @@ THREE.PlayerControls = function ( camera, player, domElement ) {
 			
 			// up arrow or 'w' - move forward
 			
-			this.player.position.x -= this.moveSpeed * Math.sin( this.player.rotation.y );
-			this.player.position.z -= this.moveSpeed * Math.cos( this.player.rotation.y );
-			
-			this.camera.position.x -= this.moveSpeed * Math.sin( this.player.rotation.y );
-			this.camera.position.z -= this.moveSpeed * Math.cos( this.player.rotation.y );
-			
+			if(playerCanMove("forward", this.player)){
+				this.player.position.x -= this.moveSpeed * Math.sin( this.player.rotation.y );
+				this.player.position.z -= this.moveSpeed * Math.cos( this.player.rotation.y );
+				
+				this.camera.position.x -= this.moveSpeed * Math.sin( this.player.rotation.y );
+				this.camera.position.z -= this.moveSpeed * Math.cos( this.player.rotation.y );
+				
+
+			}
+
+
+
 		}
 		
 		if (keyState[40] || keyState[83]) {
 			
 			// down arrow or 's' - move backward
-			playerIsMoving = true;
+
+			if(playerCanMove("backward", this.player)){
+				playerIsMoving = true;
 			
-			this.player.position.x += this.moveSpeed * Math.sin( this.player.rotation.y );
-			this.player.position.z += this.moveSpeed * Math.cos( this.player.rotation.y );
-			
-			this.camera.position.x += this.moveSpeed * Math.sin( this.player.rotation.y );
-			this.camera.position.z += this.moveSpeed * Math.cos( this.player.rotation.y );
-			
+				this.player.position.x += this.moveSpeed * Math.sin( this.player.rotation.y );
+				this.player.position.z += this.moveSpeed * Math.cos( this.player.rotation.y );
+				
+				this.camera.position.x += this.moveSpeed * Math.sin( this.player.rotation.y );
+				this.camera.position.z += this.moveSpeed * Math.cos( this.player.rotation.y );
+				
+			}
+
+
+
 		}
 		
 		if (keyState[37] || keyState[65]) {
@@ -269,27 +303,39 @@ THREE.PlayerControls = function ( camera, player, domElement ) {
 		if ( keyState[81] ) {
 			
 			// 'q' - strafe left
-			playerIsMoving = true;
+
+			if(playerCanMove("left", this.player)){
+				playerIsMoving = true;
 			
-			this.player.position.x -= this.moveSpeed * Math.cos( this.player.rotation.y );
-			this.player.position.z += this.moveSpeed * Math.sin( this.player.rotation.y );
-			
-			this.camera.position.x -= this.moveSpeed * Math.cos( this.player.rotation.y );
-			this.camera.position.z += this.moveSpeed * Math.sin( this.player.rotation.y );
-			
+				this.player.position.x -= this.moveSpeed * Math.cos( this.player.rotation.y );
+				this.player.position.z += this.moveSpeed * Math.sin( this.player.rotation.y );
+				
+				this.camera.position.x -= this.moveSpeed * Math.cos( this.player.rotation.y );
+				this.camera.position.z += this.moveSpeed * Math.sin( this.player.rotation.y );
+				
+			}
+
+
 		}
 		
 		if ( keyState[69] ) {
 			
 			// 'e' - strage right
-			playerIsMoving = true;
+
+
 			
-			this.player.position.x += this.moveSpeed * Math.cos( this.player.rotation.y );
-			this.player.position.z -= this.moveSpeed * Math.sin( this.player.rotation.y );
+			if(playerCanMove("right", this.player)){
+				playerIsMoving = true;
 			
-			this.camera.position.x += this.moveSpeed * Math.cos( this.player.rotation.y );
-			this.camera.position.z -= this.moveSpeed * Math.sin( this.player.rotation.y );
-			
+				this.player.position.x += this.moveSpeed * Math.cos( this.player.rotation.y );
+				this.player.position.z -= this.moveSpeed * Math.sin( this.player.rotation.y );
+				
+				this.camera.position.x += this.moveSpeed * Math.cos( this.player.rotation.y );
+				this.camera.position.z -= this.moveSpeed * Math.sin( this.player.rotation.y );
+				
+			}
+
+
 		}
 		
 		if (keyState[32] ) {
@@ -328,6 +374,208 @@ THREE.PlayerControls = function ( camera, player, domElement ) {
 			globalObj.player.position.y+=globalObj.gravity;
 			globalObj.gravity += 0.005;
 		} 
+	};
+
+	function getCollision(player, raycaster){
+
+		this.player = player;
+		this.raycaster = raycaster;
+		
+		this.player.hitDirection.splice(0, this.player.hitDirection.length);
+
+		//console.log(this.player);
+		var playerDirection = new THREE.Vector3();
+		this.player.getWorldDirection(playerDirection);
+
+		this.player.worldDirection = playerDirection;
+		for (let i = 0; i < rays.length; i += 1) {
+			// We reset the raycaster to this direction
+			this.raycaster.set(this.player.position, rays[i]);
+			// Test if we intersect with any obstacle mesh
+			const intersects = this.raycaster.intersectObjects(collidableObjects, true);
+			// And disable that direction if we do
+			if (intersects.length > 0 && intersects[0].distance <= distance) {
+			  // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
+			  
+			  if(i === 0){
+				  this.player.hitDirection.push("+z");
+				  console.log("+z hit");
+			  }
+			  else if ( i === 1){
+				  //this.player.hitDirection.push("+z+x");
+				  this.player.hitDirection.push("+z");
+				  this.player.hitDirection.push("+x");
+
+
+				console.log("+z+x hit");
+			  }
+			  
+			  else if ( i === 2){
+				  this.player.hitDirection.push("+x");
+	
+				console.log("+x hit");
+			  }
+			  
+						
+			  else if ( i === 3){
+				console.log("-z+x hit");
+				//this.player.hitDirection.push("-z+x");
+				this.player.hitDirection.push("-z");
+				this.player.hitDirection.push("+x");
+
+			}
+			  
+			  else if ( i === 4){
+				console.log("-z hit");
+				this.player.hitDirection.push("-z");
+			  }
+			  
+			  else if ( i === 5){
+				console.log("-z-x hit");
+				//this.player.hitDirection.push("-z-x");
+				this.player.hitDirection.push("-z");
+				this.player.hitDirection.push("-x");
+
+
+	
+			  }
+	
+			  else if ( i === 6){
+				console.log("-x hit");
+				this.player.hitDirection.push("-x");
+	
+			  }
+	
+			  else if ( i === 7){
+				console.log("-x+z hit");
+				//this.player.hitDirection.push("-x+z");
+				this.player.hitDirection.push("+z");
+				this.player.hitDirection.push("-x");
+
+	
+			  }
+			  
+	
+			}
+
+			this.player.hitDirection = this.player.hitDirection.filter(function(item, pos, self) {
+				return self.indexOf(item) == pos;
+			})
+				
+
+			//console.log("Player hit direction:" + this.player.hitDirection.toString());
+
+		
+		}
+		if(this.player.hitDirection.length === 0){
+			console.log("no collision");
+
+		};
+
+
+	}
+
+	function playerCanMove(direction, player){
+		
+		switch (direction) {
+			case "forward":
+				if(player.hitDirection.indexOf("+z") !== -1){
+					if(player.worldDirection.z <0){
+						return false;
+					}
+				}
+				else if(player.hitDirection.indexOf("-z") !== -1){
+					if(player.worldDirection.z > 0){
+						return false;
+					}
+				}
+				if(player.hitDirection.indexOf("+x") !== -1){
+					if(player.worldDirection.x < 0){
+						return false;
+					}
+				}
+				else if(player.hitDirection.indexOf("-x") !== -1){
+					if(player.worldDirection.x > 0){
+						return false;
+					}
+				}
+				break;
+			case "backward":
+				if(player.hitDirection.indexOf("+z") !== -1){
+					if(player.worldDirection.z > 0){
+						return false;
+					}
+				}
+				else if(player.hitDirection.indexOf("-z") !== -1){
+					if(player.worldDirection.z < 0){
+						return false;
+					}
+				}
+				if(player.hitDirection.indexOf("+x") !== -1){
+					if(player.worldDirection.x > 0){
+						return false;
+					}
+				}
+				else if(player.hitDirection.indexOf("-x") !== -1){
+					if(player.worldDirection.x < 0){
+						return false;
+					}
+				}			
+			break;
+
+			case "left":
+				if(player.hitDirection.indexOf("+z") !== -1){
+					if(player.worldDirection.x > 0){
+						return false;
+					}
+				}
+				else if(player.hitDirection.indexOf("-z") !== -1){
+					if(player.worldDirection.x < 0){
+						return false;
+					}
+				}
+				if(player.hitDirection.indexOf("+x") !== -1){
+					if(player.worldDirection.z < 0){
+						return false;
+					}
+				}
+				else if(player.hitDirection.indexOf("-x") !== -1){
+					if(player.worldDirection.z > 0){
+						return false;
+					}
+				}
+				break;
+			case "right":
+				if(player.hitDirection.indexOf("+z") !== -1){
+					if(player.worldDirection.x < 0){
+						return false;
+					}
+				}
+				else if(player.hitDirection.indexOf("-z") !== -1){
+					if(player.worldDirection.x > 0){
+						return false;
+					}
+				}
+				if(player.hitDirection.indexOf("+x") !== -1){
+					if(player.worldDirection.z > 0){
+						return false;
+					}
+				}
+				else if(player.hitDirection.indexOf("-x") !== -1){
+					if(player.worldDirection.z < 0){
+						return false;
+					}
+				}
+
+				break;
+			
+			default:
+				return true;	
+				break;
+		}
+		return true;
+
+		//console.log(player.worldDirection.z);
 	}
 	
 	
