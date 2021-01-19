@@ -21,8 +21,10 @@ var truck = new THREE.Object3D();
 var spotLightPlayer;
 var spotLight;
 
+truck.name = "truck";
+player.name = "player";
 const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
-var control_target = player;
+var control_target;
 init();
 animate();
 
@@ -94,23 +96,25 @@ function init() {
         });
     });
     // adding truck to scene
+    
     mtlLoader.load('obj/vehicle/truck.mtl', function (materials) {
         materials.preload();
         const objLoaderExample = new OBJLoader();
         objLoaderExample.setMaterials(materials);
         objLoaderExample.load('obj/vehicle/truck.obj', (root) => {
-
-            root.position.x = -10;
-            root.position.y = 0;
-            root.position.z = -5;
-            collidableObjects.push(root);
-            objects.push(root);
+            root.rotation.y = Math.PI * -1;
+            
+            //root.position.x = -10;
+            //root.position.y = 0;
+            //root.position.z = 5;
+            //collidableObjects.push(root);
+            //objects.push(root);
 
             truck.add(root);
             //scene.add(root);
         });
     });
-
+    
 
 
     loadApartment(10, 10, 1, 1);
@@ -157,23 +161,29 @@ function init() {
     }
     
     player.position.x = 0;
+    //objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, false);
+
+
+    //
+    //player.position.x = 0;
     //player.rotation.y += Math.PI * 0.5;
+    truck.position.x = -10;
     scene.add(player);
     scene.add(truck);
-
-    controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
+    control_target = player;
+    controls = new THREE.PlayerControls(camera, player, collidableObjects, raycaster);
     controls.init();
 
     group = new THREE.Group();
     scene.add(group);
 
     drag_controls = new DragControls(objects, camera, renderer.domElement);
-    controls.addEventListener('drag', render);
+    drag_controls.addEventListener('drag', render);
 
     // Events
     controls.addEventListener('change', render, false);
     window.addEventListener('resize', onWindowResize, false);
-
+    
     // Final touches
     container.appendChild(renderer.domElement);
     document.body.appendChild(container);
@@ -213,6 +223,7 @@ function update() {
     // Drag Control
     document.addEventListener('oncontextmenu', onClick, false);
     //document.addEventListener('onmouseup', onRelease, false);
+
 
 }
 
@@ -261,6 +272,10 @@ function render() {
      */
     spotLight.position.set(player.position.x, player.position.y + 30, player.position.z);
     spotLight.target = player;
+    camera.lookAt(control_target);
+/*     console.log("player : ", player.position.x, player.position.y, player.position.z);
+    console.log("truck  : ", truck.position.x, truck.position.y, player.position.z);
+    console.log("target : ", control_target.name); */
     renderer.clear();
     controls.update();
     renderer.render(scene, camera);
@@ -309,7 +324,10 @@ function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation
             collidableObjects.push(root);
             if (draggable)
                 objects.push(root);
-            scene.add(root);
+            if ( objUrl === 'obj/vehicle/truck.obj')
+                truck.add(root);
+            else
+                scene.add(root);
         });
     });
 
@@ -327,27 +345,39 @@ document.addEventListener('keydown', function (event) {
             spotLight.intensity = 1;
     }
     
-    /*
+    var targetChanged = true;
+    
     if (event.keyCode == 70) {
         if (control_target == player)
         {
-            control_target = truck;
-            player.visible = false;
-            player.position.x = truck.position.x;
-            player.position.y = truck.position.y;
-            player.position.z = truck.position.z;
-        } else
+            if(playerCanMountTruck()){
+                control_target = truck;
+                player.visible = false;
+                player.position.x = truck.position.x;
+                player.position.y = truck.position.y;
+                player.position.z = truck.position.z;
+            }
+            else{
+                targetChanged = false;
+            }
+
+        } 
+        else
         {
             control_target = player;
             player.visible = true;
-            player.position.x = truck.position.x - 10;
+            player.position.x = truck.position.x - 8;
             player.position.y = truck.position.y;
             player.position.z = truck.position.z;
         }
+        if(targetChanged){
+            controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
 
-        controls = new THREE.PlayerControls(camera, control_target);
+        }
+        //controls.init();
+        render();
     }
-    */
+    
  }, true);
 
 
@@ -406,3 +436,47 @@ function onClick(event) {
     render();
 
 }
+
+
+function playerCanMountTruck(){
+    
+	const rays = [
+		new THREE.Vector3(0, 1, 1),
+		new THREE.Vector3(1, 1, 1),
+		new THREE.Vector3(1, 1, 0),
+		new THREE.Vector3(1, 1, -1),
+		new THREE.Vector3(0, 1, -1),
+		new THREE.Vector3(-1, 1, -1),
+		new THREE.Vector3(-1, 1, 0),
+		new THREE.Vector3(-1, 1, 1)
+	  ];
+        var distance = 30;
+        var nearTruck = false;
+
+    
+		
+		
+
+		var playerDirection = new THREE.Vector3();
+		player.getWorldDirection(playerDirection);
+
+        player.worldDirection = playerDirection;
+        
+		for (let i = 0; i < rays.length; i += 1) {
+			// We reset the raycaster to this direction
+			raycaster.set(player.position, rays[i]);
+			// Test if we intersect with any obstacle mesh
+			const intersects = raycaster.intersectObjects([truck], true);
+            // And disable that direction if we do
+			if (intersects.length > 0 && intersects[0].distance <= distance) {
+			  // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
+			  
+			  nearTruck = true;
+			  
+	
+			}
+        }
+			
+        return nearTruck;
+
+    }
