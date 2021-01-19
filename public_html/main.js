@@ -19,7 +19,7 @@ var player = new THREE.Object3D();
 var truck = new THREE.Object3D();
 
 const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
-var control_target = player;
+var control_target = THREE.Object3D();
 init();
 animate();
 
@@ -91,6 +91,7 @@ function init() {
         });
     });
     // adding truck to scene
+    /*
     mtlLoader.load('obj/vehicle/truck.mtl', function (materials) {
         materials.preload();
         const objLoaderExample = new OBJLoader();
@@ -99,7 +100,7 @@ function init() {
 
             root.position.x = -10;
             root.position.y = 0;
-            root.position.z = -5;
+            root.position.z = 5;
             collidableObjects.push(root);
             objects.push(root);
 
@@ -107,7 +108,7 @@ function init() {
             //scene.add(root);
         });
     });
-
+    */
 
 
     loadApartment(10, 10, 1, 1);
@@ -129,26 +130,16 @@ function init() {
     objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -5, 15, 0);
     objectLoader('obj/character/character.mtl', 'obj/character/character.obj', -10, 15, 0, true);
 
-    objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, true);
+    objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, false);
 
 
-    // loading only character object without its material
-    /*
-     const objLoader = new OBJLoader();
-     objLoader.load('obj/character/character.obj', (root) => {
-     root.scale.set(2, 2, 2);
-     root.rotation.y = Math.PI * -1;
-     player.add(root);
-     //scene.add(root);
-     });
-     */
 
     //
     player.position.x = 0;
     //player.rotation.y += Math.PI * 0.5;
     scene.add(player);
     scene.add(truck);
-
+    control_target = player;
     controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
     controls.init();
 
@@ -156,12 +147,12 @@ function init() {
     scene.add(group);
 
     drag_controls = new DragControls(objects, camera, renderer.domElement);
-    controls.addEventListener('drag', render);
+    drag_controls.addEventListener('drag', render);
 
     // Events
     controls.addEventListener('change', render, false);
     window.addEventListener('resize', onWindowResize, false);
-
+    
     // Final touches
     container.appendChild(renderer.domElement);
     document.body.appendChild(container);
@@ -201,23 +192,7 @@ function update() {
     // Drag Control
     document.addEventListener('oncontextmenu', onClick, false);
     //document.addEventListener('onmouseup', onRelease, false);
-    
-    /* SPOTLIGHT
-    spotLight = new THREE.SpotLight( 0xffffff, 1 );
-				spotLight.position.set( 15, 40, 35 );
-				spotLight.angle = Math.PI / 4;
-				spotLight.penumbra = 0.1;
-				spotLight.decay = 2;
-				spotLight.distance = 200;
 
-				spotLight.castShadow = true;
-				spotLight.shadow.mapSize.width = 512;
-				spotLight.shadow.mapSize.height = 512;
-				spotLight.shadow.camera.near = 10;
-				spotLight.shadow.camera.far = 200;
-				spotLight.shadow.focus = 1;
-				scene.add( spotLight );
-    */
 
 }
 
@@ -264,9 +239,12 @@ function render() {
      controls.enabled = true;
      
      */
+    console.log("player : ", player.position.x, player.position.y, player.position.z);
+    console.log("truck  : ", truck.position.x, truck.position.y, player.position.z);
+    console.log("target : ", control_target);
     renderer.clear();
     controls.update();
-    renderer.render(scene, camera);
+    renderer.render(scene, control_target);
 }
 
 function onWindowResize() {
@@ -312,7 +290,10 @@ function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation
             collidableObjects.push(root);
             if (draggable)
                 objects.push(root);
-            scene.add(root);
+            if ( objUrl == 'obj/vehicle/truck.obj')
+                truck.add(root);
+            else
+                scene.add(root);
         });
     });
 
@@ -324,27 +305,29 @@ document.addEventListener('keydown', function (event) {
     // add to collect datas
     
     
-    /*
+    
     if (event.keyCode == 70) {
         if (control_target == player)
         {
             control_target = truck;
-            player.visible = false;
-            player.position.x = truck.position.x;
-            player.position.y = truck.position.y;
-            player.position.z = truck.position.z;
-        } else
+            //player.visible = false;
+            //player.position.x = truck.position.x;
+           // player.position.y = truck.position.y;
+            //player.position.z = truck.position.z;
+        } 
+        else
         {
             control_target = player;
-            player.visible = true;
-            player.position.x = truck.position.x - 10;
-            player.position.y = truck.position.y;
-            player.position.z = truck.position.z;
+            //player.visible = true;
+            //player.position.x = truck.position.x - 10;
+            //player.position.y = truck.position.y;
+            //player.position.z = truck.position.z;
         }
-
-        controls = new THREE.PlayerControls(camera, control_target);
+        controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
+        controls.init();
+        
     }
-    */
+    
  }, true);
 
 
