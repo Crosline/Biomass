@@ -165,11 +165,11 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 		console.log();
 		getCollision(this.player, this.raycaster);
 		
-		console.log("Player can move forward: " + playerCanMove("forward", this.player));
+/* 		console.log("Player can move forward: " + playerCanMove("forward", this.player));
 		console.log("Player can move backward: " + playerCanMove("backward", this.player));
 		console.log("Player can move left: " + playerCanMove("left", this.player));
 		console.log("Player can move right: " + playerCanMove("right", this.player));
-		
+		 */
 		this.center = this.player.position;
 		
 		var position = this.camera.position;
@@ -399,7 +399,7 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 			  
 			  if(i === 0){
 				  this.player.hitDirection.push("+z");
-				  console.log("+z hit");
+				  //console.log("+z hit");
 			  }
 			  else if ( i === 1){
 				  //this.player.hitDirection.push("+z+x");
@@ -407,18 +407,18 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 				  this.player.hitDirection.push("+x");
 
 
-				console.log("+z+x hit");
+				//console.log("+z+x hit");
 			  }
 			  
 			  else if ( i === 2){
 				  this.player.hitDirection.push("+x");
 	
-				console.log("+x hit");
+				//console.log("+x hit");
 			  }
 			  
 						
 			  else if ( i === 3){
-				console.log("-z+x hit");
+				//console.log("-z+x hit");
 				//this.player.hitDirection.push("-z+x");
 				this.player.hitDirection.push("-z");
 				this.player.hitDirection.push("+x");
@@ -426,12 +426,12 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 			}
 			  
 			  else if ( i === 4){
-				console.log("-z hit");
+				//console.log("-z hit");
 				this.player.hitDirection.push("-z");
 			  }
 			  
 			  else if ( i === 5){
-				console.log("-z-x hit");
+				//console.log("-z-x hit");
 				//this.player.hitDirection.push("-z-x");
 				this.player.hitDirection.push("-z");
 				this.player.hitDirection.push("-x");
@@ -441,13 +441,13 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 			  }
 	
 			  else if ( i === 6){
-				console.log("-x hit");
+				//console.log("-x hit");
 				this.player.hitDirection.push("-x");
 	
 			  }
 	
 			  else if ( i === 7){
-				console.log("-x+z hit");
+				//console.log("-x+z hit");
 				//this.player.hitDirection.push("-x+z");
 				this.player.hitDirection.push("+z");
 				this.player.hitDirection.push("-x");
@@ -468,7 +468,7 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 		
 		}
 		if(this.player.hitDirection.length === 0){
-			console.log("no collision");
+			//console.log("no collision");
 
 		};
 
