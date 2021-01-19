@@ -137,6 +137,7 @@ function init() {
     //
     //player.position.x = 0;
     //player.rotation.y += Math.PI * 0.5;
+    truck.position.x = -10;
     scene.add(player);
     scene.add(truck);
     control_target = player;
