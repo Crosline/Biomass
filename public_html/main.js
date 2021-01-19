@@ -311,18 +311,18 @@ document.addEventListener('keydown', function (event) {
         if (control_target == player)
         {
             control_target = truck;
-            //player.visible = false;
-            //player.position.x = truck.position.x;
-           // player.position.y = truck.position.y;
-            //player.position.z = truck.position.z;
+            player.visible = false;
+            player.position.x = truck.position.x;
+            player.position.y = truck.position.y;
+            player.position.z = truck.position.z;
         } 
         else
         {
             control_target = player;
-            //player.visible = true;
-            //player.position.x = truck.position.x - 10;
-            //player.position.y = truck.position.y;
-            //player.position.z = truck.position.z;
+            player.visible = true;
+            player.position.x = truck.position.x - 8;
+            player.position.y = truck.position.y;
+            player.position.z = truck.position.z;
         }
         controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
         //controls.init();
