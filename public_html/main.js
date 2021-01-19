@@ -19,7 +19,7 @@ var player = new THREE.Object3D();
 var truck = new THREE.Object3D();
 
 const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
-var control_target = THREE.Object3D();
+var control_target;
 init();
 animate();
 
@@ -91,24 +91,25 @@ function init() {
         });
     });
     // adding truck to scene
-    /*
+    
     mtlLoader.load('obj/vehicle/truck.mtl', function (materials) {
         materials.preload();
         const objLoaderExample = new OBJLoader();
         objLoaderExample.setMaterials(materials);
         objLoaderExample.load('obj/vehicle/truck.obj', (root) => {
-
-            root.position.x = -10;
-            root.position.y = 0;
-            root.position.z = 5;
-            collidableObjects.push(root);
-            objects.push(root);
+            root.rotation.y = Math.PI * -1;
+            
+            //root.position.x = -10;
+            //root.position.y = 0;
+            //root.position.z = 5;
+            //collidableObjects.push(root);
+            //objects.push(root);
 
             truck.add(root);
             //scene.add(root);
         });
     });
-    */
+    
 
 
     loadApartment(10, 10, 1, 1);
@@ -130,17 +131,16 @@ function init() {
     objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -5, 15, 0);
     objectLoader('obj/character/character.mtl', 'obj/character/character.obj', -10, 15, 0, true);
 
-    objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, false);
-
+    //objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, false);
 
 
     //
-    player.position.x = 0;
+    //player.position.x = 0;
     //player.rotation.y += Math.PI * 0.5;
     scene.add(player);
     scene.add(truck);
     control_target = player;
-    controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
+    controls = new THREE.PlayerControls(camera, player, collidableObjects, raycaster);
     controls.init();
 
     group = new THREE.Group();
@@ -239,12 +239,13 @@ function render() {
      controls.enabled = true;
      
      */
+    camera.lookAt(control_target);
     console.log("player : ", player.position.x, player.position.y, player.position.z);
     console.log("truck  : ", truck.position.x, truck.position.y, player.position.z);
-    console.log("target : ", control_target);
+    console.log("target : ", control_target.name);
     renderer.clear();
     controls.update();
-    renderer.render(scene, control_target);
+    renderer.render(scene, camera);
 }
 
 function onWindowResize() {
@@ -290,7 +291,7 @@ function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation
             collidableObjects.push(root);
             if (draggable)
                 objects.push(root);
-            if ( objUrl == 'obj/vehicle/truck.obj')
+            if ( objUrl === 'obj/vehicle/truck.obj')
                 truck.add(root);
             else
                 scene.add(root);
@@ -324,8 +325,8 @@ document.addEventListener('keydown', function (event) {
             //player.position.z = truck.position.z;
         }
         controls = new THREE.PlayerControls(camera, control_target, collidableObjects, raycaster);
-        controls.init();
-        
+        //controls.init();
+        render();
     }
     
  }, true);
