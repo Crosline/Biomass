@@ -17,7 +17,8 @@ var collected = [];
 
 var player = new THREE.Object3D();
 var truck = new THREE.Object3D();
-
+truck.name = "truck";
+player.name = "player";
 const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
 var control_target;
 init();
@@ -240,9 +241,9 @@ function render() {
      
      */
     camera.lookAt(control_target);
-    console.log("player : ", player.position.x, player.position.y, player.position.z);
+/*     console.log("player : ", player.position.x, player.position.y, player.position.z);
     console.log("truck  : ", truck.position.x, truck.position.y, player.position.z);
-    console.log("target : ", control_target.name);
+    console.log("target : ", control_target.name); */
     renderer.clear();
     controls.update();
     renderer.render(scene, camera);

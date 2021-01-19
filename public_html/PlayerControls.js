@@ -72,7 +72,7 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 		new THREE.Vector3(-1, 1, 0),
 		new THREE.Vector3(-1, 1, 1)
 	  ];
-	const distance = 0.5
+	var distance = 0.5
 	// events
 	
 	var changeEvent = { type: 'change' };
@@ -150,7 +150,6 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 	};
 	
 	this.init = function() {
-		
 		this.camera.position.x = this.player.position.x + 2;
 		this.camera.position.y = this.player.position.y + 2;
 		this.camera.position.z = this.player.position.x + 2;
@@ -163,6 +162,11 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 		
 		this.checkKeyStates();
 		console.log();
+		if(this.player.name == "truck"){
+			this.moveSpeed = 0.25;
+			this.turnSpeed = 0.02;
+			distance = 15;
+		}
 		getCollision(this.player, this.raycaster);
 		
 /* 		console.log("Player can move forward: " + playerCanMove("forward", this.player));
