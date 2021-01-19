@@ -63,14 +63,14 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 	
 
 	const rays = [
-		new THREE.Vector3(0, 0, 1),
-		new THREE.Vector3(1, 0, 1),
-		new THREE.Vector3(1, 0, 0),
-		new THREE.Vector3(1, 0, -1),
-		new THREE.Vector3(0, 0, -1),
-		new THREE.Vector3(-1, 0, -1),
-		new THREE.Vector3(-1, 0, 0),
-		new THREE.Vector3(-1, 0, 1)
+		new THREE.Vector3(0, 1, 1),
+		new THREE.Vector3(1, 1, 1),
+		new THREE.Vector3(1, 1, 0),
+		new THREE.Vector3(1, 1, -1),
+		new THREE.Vector3(0, 1, -1),
+		new THREE.Vector3(-1, 1, -1),
+		new THREE.Vector3(-1, 1, 0),
+		new THREE.Vector3(-1, 1, 1)
 	  ];
 	const distance = 0.5
 	// events
