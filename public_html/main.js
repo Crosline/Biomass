@@ -43,9 +43,10 @@ function init() {
     // create a global audio source
     const sound = new THREE.Audio( listener );
 
+    const nostalgia = ['cem_karaca_isci_kal.mp3', 'baris_manco_donence.mp3'];
     // load a sound and set it as the Audio object's buffer
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'cem_karaca_isci_kal.mp3', function( buffer ) {
+    audioLoader.load( nostalgia[randomInt(0,1)], function( buffer ) {
             sound.setBuffer( buffer );
             sound.setLoop( true );
             sound.setVolume( 0.1 );
@@ -736,5 +737,5 @@ function playerCanMountTruck(){
     }
 	
 function randomInt(min, max) { // min and max included 
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  return Math.round(Math.random() * (max - min + 1) + min);
 }
