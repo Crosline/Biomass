@@ -180,10 +180,7 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 		var position = this.camera.position;
 		var offset = position.clone().sub( this.center );
 		
-		if(this.player.name == "truck"){
-			this.center.z-=10;
-			this.center.y+=10;
-		}
+		
 		// angle from z-axis around y-axis
 		
 		var theta = Math.atan2( offset.x, offset.z );
