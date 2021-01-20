@@ -150,6 +150,7 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 	};
 	
 	this.init = function() {
+	
 		this.camera.position.x = this.player.position.x + 2;
 		this.camera.position.y = this.player.position.y + 2;
 		this.camera.position.z = this.player.position.x + 2;
@@ -165,7 +166,7 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 		if(this.player.name == "truck"){
 			this.moveSpeed = 0.25;
 			this.turnSpeed = 0.02;
-			distance = 15;
+			distance = 5;
 		}
 		getCollision(this.player, this.raycaster);
 		
@@ -175,10 +176,14 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 		console.log("Player can move right: " + playerCanMove("right", this.player));
 		 */
 		this.center = this.player.position;
-		
+
 		var position = this.camera.position;
 		var offset = position.clone().sub( this.center );
 		
+		if(this.player.name == "truck"){
+			this.center.z-=10;
+			this.center.y+=10;
+		}
 		// angle from z-axis around y-axis
 		
 		var theta = Math.atan2( offset.x, offset.z );
@@ -214,7 +219,6 @@ THREE.PlayerControls = function ( camera, player, collidableObjects, raycaster, 
 			position.copy( this.center ).add( offset );
 			
 		}
-		
 		this.camera.lookAt( this.center );
 		
 		thetaDelta = 0;
