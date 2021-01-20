@@ -739,3 +739,26 @@ function playerCanMountTruck(){
 function randomInt(min, max) { // min and max included 
   return Math.round(Math.random() * (max - min + 1) + min);
 }
+
+// random waste generator
+setInterval(function(){
+    var rand = Math.floor(Math.random() * 4)
+    var rand_x = Math.floor(Math.random() * 140) -70;
+    var rand_y = 0;
+    var rand_z = Math.floor(Math.random() * 300) -180;
+    console.log(rand_x, rand_z);
+    if (rand == 0)
+    {objectLoader('obj/trash/trash_bag.mtl', 'obj/trash/trash_bag.obj', rand_x, rand_z, rand_y, true);}
+    if (rand == 1)
+    {objectLoader('obj/trash/bottle2.mtl', 'obj/trash/bottle2.obj', rand_x, rand_z, rand_y, true);}
+    if (rand == 2)
+    {objectLoader('obj/trash/bottle1.mtl', 'obj/trash/bottle1.obj', rand_x, rand_z, rand_y, true);}
+    if (rand == 3)
+    {    objectLoader('obj/trash/bottle3.mtl', 'obj/trash/bottle3.obj', rand_x, rand_z, rand_y, true);}
+ }, 3000);
+ 
+ setInterval(function(){
+     var rand_x = Math.floor(Math.random() * 100) + -170;
+     var rand_z = Math.floor(Math.random() * 30) -40;
+     objectLoader('obj/field/poo.mtl', 'obj/field/poo.obj', rand_x, rand_z, 0, true);
+ }, 1000);
