@@ -116,13 +116,241 @@ function init() {
     });
     
 
+	/***************************************************************************/
 
-    loadApartment(10, 10, 1, 1);
-    loadApartment(10, 30, 1, 2);
-    loadApartment(10, 50, 1, 3);
-    loadApartment(30, 30, 1, 4);
-    loadApartment(50, 50, 2, 15);
+    loadApartment(15, 15, 1, Math.floor(Math.random() * 10)+1);
+    loadApartment(27.5, 15, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(27.5, 25, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(52.5, 15, 1, Math.floor(Math.random() * 10)+1, -0.5);
+    loadApartment(52.5, 25, 1, Math.floor(Math.random() * 10)+1, -0.5);
+    loadApartment(52.5, 35, 1, Math.floor(Math.random() * 10)+1, -0.5);
+    loadApartment(40, 45, 2, Math.floor(Math.random() * 20)+1);
+    
+    loadApartment(-15, 10, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(-15, 20, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(-15, 30, 1, Math.floor(Math.random() * 10)+1, 0.5);
 
+    /*
+    objectLoader('obj/trash/bottle1.mtl', 'obj/trash/bottle1.obj', 0, 5, 0, true);
+    objectLoader('obj/trash/bottle2.mtl', 'obj/trash/bottle2.obj', -5, 5, 0, true);
+    objectLoader('obj/trash/bottle3.mtl', 'obj/trash/bottle3.obj', -10, 5, 0, true);
+
+    objectLoader('obj/trash/trash_bag.mtl', 'obj/trash/trash_bag.obj', 0, 10, 0, true);
+    objectLoader('obj/trash/trash_can.mtl', 'obj/trash/trash_can.obj', -5, 10, 0, true);
+    objectLoader('obj/trash/trash_can_wlid.mtl', 'obj/trash/trash_can_wlid.obj', -10, 10, 0, true);
+
+    objectLoader('obj/trash/trash_dumpster.mtl', 'obj/trash/trash_dumpster.obj', 0, 15, 0, );
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -5, 15, 0);
+    objectLoader('obj/character/character.mtl', 'obj/character/character.obj', -10, 15, 0, true);
+
+    objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', 0, 0, 0, false);
+    objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, true);*/
+
+
+    objectLoader('obj/trash/trash_can.mtl', 'obj/trash/trash_can.obj', 7, 7, 0, false);
+    
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -7, 15, 0, false, 0.5);
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -7, 55, 0, false, 0.75);
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -7, -20, 0, false, 0.5);
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -7, -50, 0, false, 0.5);
+    
+    
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', 30, 7, 0, false, -1);
+    
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -40, 7, 0, false, -1);
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -70, 7, 0, false, -1);
+    
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -30, -67.5, 0, false, 0);
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -65, -67.5, 0, false, 0);
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', 30, -67.5, 0, false, 0);
+    
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', 80, 7, 0, false, -1);
+    
+    objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', 30, 45, 0, false, -1);
+    
+    
+    
+    
+    
+    objectLoader('obj/way/connector.mtl', 'obj/way/connector.obj', 0, 0, 0.01, false, 0);
+    
+    // 0.5 way
+    for (var i = 1; i <= 3; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', 10 * i, 0, 0.01, false, 0.5);
+    
+    objectLoader('obj/way/connector.mtl', 'obj/way/connector.obj', 40, 0, 0.01, false, 0);
+    for (var i = 1; i <= 3; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', 40 + 10 * i, 0, 0.01, false, 0.5);
+    // 0 turn at 0.5 way
+    for (var i = 1; i <= 2; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', 40, 10 * i, 0.01, false, 0);
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', 40, 30, 0.01, false, 0);
+    // end of 0.5 way
+    for (var i = 1; i <= 3; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', 40 + 10 * i, 0, 0.01, false, 0.5);
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', 80, 0, 0.01, false, 0.5);
+    loadApartment(95, 0, 2, 9, -0.5);
+    loadApartment(65, 15, 1, 2, -1);
+    
+    for (var i = 1; i <= 7; i++)
+        loadApartment(85 - 10*i, -15, 1, Math.floor(Math.random() * 10), 0);
+    
+    for (var i = 1; i <= 2; i++)
+        loadApartment(-15 -15*i, 15, 1, Math.floor(Math.random() * 10), -1);
+    
+    loadApartment(-15, -15, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(-15, -25, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(-15, -35, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(-15, -45, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    
+    loadApartment(15, -25, 1, Math.floor(Math.random() * 10)+1, -0.5);
+    loadApartment(15, -35, 1, Math.floor(Math.random() * 10)+1, -0.5);
+    loadApartment(15, -45, 1, Math.floor(Math.random() * 10)+1, -0.5);
+    
+    loadApartment(-25, -45, 1, Math.floor(Math.random() * 10)+1, -1);
+    loadApartment(-35, -45, 1, Math.floor(Math.random() * 10)+1, -1);
+    loadApartment(-25, -75, 1, Math.floor(Math.random() * 10)+1, 1);
+    loadApartment(-35, -75, 1, Math.floor(Math.random() * 10)+1, 1);
+    loadApartment(-15, -75, 1, Math.floor(Math.random() * 10)+1, 1);
+    loadApartment(-45, -75, 1, Math.floor(Math.random() * 10)+1, 1);
+    
+    loadApartment(-45, -25, 1, Math.floor(Math.random() * 10)+1, -0.5);
+    loadApartment(-45, -35, 1, Math.floor(Math.random() * 10)+1, -0.5);
+    loadApartment(-75, -25, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(-75, -35, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(-75, -15, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    loadApartment(-75, -45, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    
+    
+    loadApartment(-45, 30, 1, Math.floor(Math.random() * 10)+1, -0.75);
+    loadApartment(-60, 35, 1, Math.floor(Math.random() * 10)+1, -1);
+    loadApartment(-75, 30, 1, Math.floor(Math.random() * 10)+1, 0.75);
+    
+    loadApartment(-75, 15, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    
+    loadApartment(-25, -15, 1, Math.floor(Math.random() * 10)+1, 0);
+    loadApartment(-35, -15, 1, Math.floor(Math.random() * 10)+1, 0);
+    
+    loadApartment(70, 15, 1, Math.floor(Math.random() * 10)+1, -1);
+    
+    loadApartment(40, -75, 2, Math.floor(Math.random() * 10)+1, 0);
+    loadApartment(-75, -65, 2, Math.floor(Math.random() * 10)+1, 0.5);
+    
+    loadApartment(25, -75, 1, Math.floor(Math.random() * 10)+1, 0);
+    loadApartment(30, -45, 1, Math.floor(Math.random() * 10)+1, -1);
+    loadApartment(40, -45, 1, Math.floor(Math.random() * 10)+1, -1);
+    
+    // -1 way
+    for (var i = 1; i <= 5; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', 0, -10*i, 0.01, false, -1);
+   
+    objectLoader('obj/way/connector.mtl', 'obj/way/connector.obj', 0, -60, 0.01, false, -1);
+    for (var i = 1; i <= 10; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', 0, -60-10*i, 0.01, false, -1);
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', 0, -170, 0.01, false, -1);
+    for (var i = 1; i <= 3; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', 10*i, -60, 0.01, false, 0.5);
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', 40, -60, 0.01, false, 0.5);
+    for (var i = 1; i <= 5; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', -10*i, -60, 0.01, false, -0.5);
+    
+    
+    objectLoader('obj/way/connector.mtl', 'obj/way/connector.obj', -60, -60, 0.01, false, 0);
+    for (var i = 1; i <= 5; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', -60, -60+10*i, 0.01, false, 0);
+    
+    objectLoader('obj/way/connector.mtl', 'obj/way/connector.obj', -60, 0, 0.01, false, 0);
+    objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', -60, 10, 0.01, false, 0);
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', -60, 20, 0.01, false, 0);
+    for (var i = 1; i <= 5; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', -60+10*i, 0, 0.01, false, 0.5);
+    for (var i = 1; i <= 10; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', -60-10*i, 0, 0.01, false, -0.5);
+    
+    
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', -170, 0, 0.01, false, -0.5);
+    
+    
+    // 0 way
+    for (var i = 1; i <= 3; i++)
+        objectLoader('obj/way/mid.mtl', 'obj/way/mid.obj', 0, 10*i, 0.01, false, 0);
+    
+    
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', 10, 40, 0.01, false, 0.5);
+    objectLoader('obj/way/connector.mtl', 'obj/way/connector.obj', 0, 40, 0.01, false, 0);
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', 0, 50, 0.01, false, 0);
+    loadApartment(15, 55, 1, Math.floor(Math.random() * 10)+1, -0.75);
+    loadApartment(0, 65, 1, Math.floor(Math.random() * 10)+1, -1);
+    loadApartment(-15, 55, 1, Math.floor(Math.random() * 10)+1, 0.75);
+    objectLoader('obj/way/end.mtl', 'obj/way/end.obj', -10, 40, 0.01, false, -0.5);
+    loadApartment(-25, 40, 1, Math.floor(Math.random() * 10)+1, 0.5);
+    
+    
+    
+    
+    for (var i = -170; i <= -100; i= i + 2)
+        objectLoader('obj/field/plant.mtl', 'obj/field/plant.obj', i, 15, 0, false, Math.random() * 2 - 1);
+    for (var i = -170; i <= -100; i= i + 2)
+        objectLoader('obj/field/plant.mtl', 'obj/field/plant.obj', i, 20, 0, false, Math.random() * 2 - 1);
+    for (var i = -170; i <= -100; i= i + 2)
+        objectLoader('obj/field/plant.mtl', 'obj/field/plant.obj', i, 25, 0, false, Math.random() * 2 - 1);
+    for (var i = -170; i <= -100; i= i + 2)
+        objectLoader('obj/field/plant.mtl', 'obj/field/plant.obj', i, 30, 0, false, Math.random() * 2 - 1);
+    
+    for (var i = -170; i < -100; i= i + 6.25)
+        objectLoader('obj/field/fence.mtl', 'obj/field/fence.obj', i, 10, 0, false, 0);
+    for (var i = -170; i < -100; i= i + 6.25)
+        objectLoader('obj/field/fence.mtl', 'obj/field/fence.obj', i, 35, 0, false, 0);
+    
+    for (var i = 10; i < 35; i= i + 6.25)
+        objectLoader('obj/field/fence.mtl', 'obj/field/fence.obj', -176.25, i, 0, false, 0.5);
+    for (var i = 10; i < 35; i= i + 6.25)
+        objectLoader('obj/field/fence.mtl', 'obj/field/fence.obj', -101.25, i, 0, false, 0.5);
+    
+    
+    for (var i = 0; i < 30; i++)
+        objectLoader('obj/field/cow.mtl', 'obj/field/cow.obj', randomInt(-190, -100), randomInt(-15, -50), 0, false, Math.random() * 2 - 1);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    for (var i = 0; i < 300; i++){
+        var type = Math.floor(Math.random() * 3)+1;
+        objectLoader('obj/tree/'+type+'.mtl', 'obj/tree/'+type+'.obj', randomInt(-200, 150), randomInt(75, 200), 0.1, false, Math.random() * 2 - 1);
+    }    
+    
+    for (var i = 0; i < 150; i++){
+        var type = Math.floor(Math.random() * 3)+1;
+        objectLoader('obj/tree/'+type+'.mtl', 'obj/tree/'+type+'.obj', randomInt(105, 150), randomInt(-200, 75), 0.1, false, Math.random() * 2 - 1);
+    }
+    
+    for (var i = 0; i < 250; i++){
+        var type = Math.floor(Math.random() * 3)+1;
+        objectLoader('obj/tree/'+type+'.mtl', 'obj/tree/'+type+'.obj', randomInt(-200, 150), randomInt(-325, -200), 0.1, false, Math.random() * 2 - 1);
+    }
+    
+    for (var i = 0; i < 200; i++){
+        var type = Math.floor(Math.random() * 3)+1;
+        objectLoader('obj/tree/'+type+'.mtl', 'obj/tree/'+type+'.obj', randomInt(-245, -200), randomInt(-325, 200), 0.1, false, Math.random() * 2 - 1);
+    }
+    
+    
+    objectLoader('obj/farm.mtl', 'obj/farm.obj', -180, 0, 0.01, false, 0);
+    objectLoader('obj/factory.mtl', 'obj/factory.obj', 0, -190, 0.01, false, -0.5);
+
+	
+	
+	
+	
+	
+	
+	
+	/************************************************************************/
 
     objectLoader('obj/trash/bottle1.mtl', 'obj/trash/bottle1.obj', 0, 5, 0, true);
     objectLoader('obj/trash/bottle2.mtl', 'obj/trash/bottle2.obj', -5, 5, 0, true);
@@ -137,6 +365,9 @@ function init() {
     objectLoader('obj/character/character.mtl', 'obj/character/character.obj', -10, 15, 0, true);
 
     objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, true);
+	
+	
+	
     
     // spotlight
     {
