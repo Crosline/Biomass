@@ -8,11 +8,12 @@ var outerBar = document.getElementById("outer-bar");
 var innerBar = document.getElementById("inner-bar");
 var energyPercentage = document.getElementById("energy-amount");
 var truckCapacitySpan = document.getElementById("truck-capacity-span");
+var scoreSpan = document.getElementById("score");
+var scoreEndgameSpan = document.getElementById("score-endgame");
+var gameOverScreen = document.getElementById("game-over");
 
 var toggleControlBox = true;
 var toggleShader = false 
-var totalEnergy = 200;
-var gameOver = false;
 
 controlBoxToggleButton.addEventListener("click", (event)=>{
     event.preventDefault();
@@ -53,14 +54,14 @@ decreaseLighting.addEventListener("click", (event) => {
 
 
 var energyInterval =  setInterval(function(){
-    if(totalEnergy <= 0){
-        gameOver = true;
+    if(GLOBAL_SERVICE_PROVIDER.totalEnergy <= 0){
+        targetProxy.gameOver = true;
         clearInterval(energyInterval);
     }
     else{
-        totalEnergy--;
-        energyPercentage.innerHTML = totalEnergy / 2 + "%";
-        innerBar.style.width = parseInt(300 * (totalEnergy/200)) + "px"; 
+        GLOBAL_SERVICE_PROVIDER.totalEnergy--;
+        energyPercentage.innerHTML = GLOBAL_SERVICE_PROVIDER.totalEnergy / 2 + "%";
+        innerBar.style.width = parseInt(300 * (GLOBAL_SERVICE_PROVIDER.totalEnergy/200)) + "px"; 
     
     }
 }, 1000);
@@ -68,9 +69,42 @@ var energyInterval =  setInterval(function(){
 var targetProxy = new Proxy(GLOBAL_SERVICE_PROVIDER, {
   set: function (target, key, value) {
       console.log(`${key} set to ${value}`);
+
+    
       target[key] = value;
-      truckCapacitySpan.innerHTML = String(value) + "/" + 20;
+      if(!key == "gameOver"){
+        if(key == "unload"){
+            console.log("unloaded");
+            target[key] = !value;
+            GLOBAL_SERVICE_PROVIDER.score += parseInt(GLOBAL_SERVICE_PROVIDER.truckLoad * 2 * (Math.random() + 1))
+            scoreSpan.innerHTML = GLOBAL_SERVICE_PROVIDER.score;
+    
+            if((GLOBAL_SERVICE_PROVIDER.totalEnergy + parseInt(4/5 * GLOBAL_SERVICE_PROVIDER.truckLoad)) > 200 ){
+                GLOBAL_SERVICE_PROVIDER.totalEnergy = 200;
+            }
+            else{
+                GLOBAL_SERVICE_PROVIDER.totalEnergy += parseInt(4/5 * GLOBAL_SERVICE_PROVIDER.truckLoad);
+            }
+            
+            
+            GLOBAL_SERVICE_PROVIDER.truckLoad = 0;
+          }
+          if(key == "truckLoad"){
+            truckCapacitySpan.innerHTML = String(value) + "/" + 20;
+    
+          }
+
+      }
+      else if(key == "gameOver"){
+          console.log("here");
+        scoreEndgameSpan.innerHTML =  GLOBAL_SERVICE_PROVIDER.score;
+        gameOverScreen.style.display = "block";
+      }
+     
+
       return true;
   }
 });
 
+
+targetProxy.unload = true;
