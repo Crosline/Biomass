@@ -36,6 +36,21 @@ function init() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+	//cem karaca
+    const listener = new THREE.AudioListener();
+    camera.add( listener );
+
+    // create a global audio source
+    const sound = new THREE.Audio( listener );
+
+    // load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( 'cem_karaca_isci_kal.mp3', function( buffer ) {
+            sound.setBuffer( buffer );
+            sound.setLoop( true );
+            sound.setVolume( 0.1 );
+            sound.play();
+    });
 
     renderer = new THREE.WebGLRenderer({alpha: true});
     renderer.setSize(window.innerWidth, window.innerHeight);
