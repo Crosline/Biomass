@@ -38,7 +38,7 @@ increaseLighting.addEventListener("click", (event) => {
     event.preventDefault();
     if(lightingAmount.value < parseInt(lightingAmount.max)){
         lightingAmount.value = parseInt(lightingAmount.value)+1;
-
+        GLOBAL_SERVICE_PROVIDER.lightingIntensity =  parseInt(lightingAmount.value)/10; 
     }
 })
 
@@ -46,6 +46,7 @@ decreaseLighting.addEventListener("click", (event) => {
     event.preventDefault();
     if(lightingAmount.value > parseInt(lightingAmount.min)){
         lightingAmount.value = parseInt(lightingAmount.value)-1;
+        GLOBAL_SERVICE_PROVIDER.lightingIntensity =  parseInt(lightingAmount.value)/10; 
 
     }
 })

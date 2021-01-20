@@ -219,6 +219,7 @@ function update() {
     }*/
 
     //console.log(intersects.length);
+    spotLight.intensity = GLOBAL_SERVICE_PROVIDER.lightingIntensity;
     controls.update();
     // Drag Control
     document.addEventListener('oncontextmenu', onClick, false);
