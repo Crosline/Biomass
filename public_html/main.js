@@ -474,7 +474,6 @@ function update() {
     directionalLight.intensity = GLOBAL_SERVICE_PROVIDER.lightingIntensity;
     hemisphereLight.intensity = GLOBAL_SERVICE_PROVIDER.lightingIntensity;
 
-    pickTrash();
     controls.update();
     // Drag Control
     document.addEventListener('oncontextmenu', onClick, false);
@@ -672,7 +671,9 @@ document.addEventListener('keydown', function (event) {
         //controls.init();
         render();
     }
-    
+    if(event.keyCode == 88){
+        pickTrash();
+    }
  }, true);
 
 
@@ -826,6 +827,7 @@ setInterval(function(){
 
         player.worldDirection = playerDirection;
         
+        let addToTruck = false;
 		for (let i = 0; i < rays.length; i += 1) {
 			// We reset the raycaster to this direction
 			raycaster.set(player.position, rays[i]);
@@ -834,11 +836,25 @@ setInterval(function(){
             // And disable that direction if we do
 			if (intersects.length > 0 && intersects[0].distance <= distance) {
 			  // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
-			  
-			    console.log(intersects[0].object);
+                addToTruck = true;
                 intersects[0].object.visible = false;
+
 	
 			}
         }
+
+        if(addToTruck){
+            if(targetProxy.truckLoad <=17){
+                targetProxy.truckLoad +=3;
+    
+            }
+    
+        }
+
+
 			
  }
+
+
+
+ 
