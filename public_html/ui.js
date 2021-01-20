@@ -6,8 +6,8 @@ var decreaseLighting = document.getElementById("minus");
 var lightingAmount = document.getElementById("lighting-amount");
 var outerBar = document.getElementById("outer-bar");
 var innerBar = document.getElementById("inner-bar");
-
 var energyPercentage = document.getElementById("energy-amount");
+var truckCapacitySpan = document.getElementById("truck-capacity-span");
 
 var toggleControlBox = true;
 var toggleShader = false 
@@ -64,3 +64,13 @@ var energyInterval =  setInterval(function(){
     
     }
 }, 1000);
+
+var targetProxy = new Proxy(GLOBAL_SERVICE_PROVIDER, {
+  set: function (target, key, value) {
+      console.log(`${key} set to ${value}`);
+      target[key] = value;
+      truckCapacitySpan.innerHTML = String(value) + "/" + 20;
+      return true;
+  }
+});
+
