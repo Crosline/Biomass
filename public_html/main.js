@@ -66,6 +66,7 @@ function init() {
         const groundColor = 0xB97A20;  // brownish orange
         const intensity = 1;
         const light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
+        light.name = "hemisphereLight";
         scene.add(light);
     }
 
@@ -75,6 +76,7 @@ function init() {
         const light = new THREE.DirectionalLight(color, intensity);
         light.position.set(0, 10, 0);
         light.target.position.set(-5, 0, 0);
+        light.name = "directionalLight"
         scene.add(light);
         scene.add(light.target);
     }
@@ -450,7 +452,12 @@ function update() {
     }*/
 
     //console.log(intersects.length);
-    spotLight.intensity = GLOBAL_SERVICE_PROVIDER.lightingIntensity;
+
+    let directionalLight = scene.getObjectByName("directionalLight");
+    let hemisphereLight = scene.getObjectByName("hemisphereLight");
+    directionalLight.intensity = GLOBAL_SERVICE_PROVIDER.lightingIntensity;
+    hemisphereLight.intensity = GLOBAL_SERVICE_PROVIDER.lightingIntensity;
+
     controls.update();
     // Drag Control
     document.addEventListener('oncontextmenu', onClick, false);
