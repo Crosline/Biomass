@@ -72,9 +72,8 @@ var targetProxy = new Proxy(GLOBAL_SERVICE_PROVIDER, {
 
     
       target[key] = value;
-      if(!key == "gameOver"){
+      if(!(key == "gameOver")){
         if(key == "unload"){
-            console.log("unloaded");
             target[key] = !value;
             GLOBAL_SERVICE_PROVIDER.score += parseInt(GLOBAL_SERVICE_PROVIDER.truckLoad * 2 * (Math.random() + 1))
             scoreSpan.innerHTML = GLOBAL_SERVICE_PROVIDER.score;
@@ -88,6 +87,8 @@ var targetProxy = new Proxy(GLOBAL_SERVICE_PROVIDER, {
             
             
             GLOBAL_SERVICE_PROVIDER.truckLoad = 0;
+            truckCapacitySpan.innerHTML = String(0) + "/" + 20;
+
           }
           if(key == "truckLoad"){
             truckCapacitySpan.innerHTML = String(value) + "/" + 20;
@@ -107,4 +108,3 @@ var targetProxy = new Proxy(GLOBAL_SERVICE_PROVIDER, {
 });
 
 
-targetProxy.unload = true;

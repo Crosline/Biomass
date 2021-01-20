@@ -14,7 +14,8 @@ let enableSelection = false;
 const objects = [];
 const collidableObjects = [];
 var collected = [];
-
+var trash = [];
+var factory = [];
 var player = new THREE.Object3D();
 var truck = new THREE.Object3D();
 
@@ -380,7 +381,7 @@ function init() {
 
     objectLoader('obj/trash/trash_dumpster.mtl', 'obj/trash/trash_dumpster.obj', 0, 15, 0, );
     objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -5, 15, 0);
-    objectLoader('obj/character/character.mtl', 'obj/character/character.obj', -10, 15, 0, true);
+    //objectLoader('obj/character/character.mtl', 'obj/character/character.obj', -10, 15, 0, true);
 
     //objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, true);
 	
@@ -577,13 +578,56 @@ function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation
             root.position.y = y;
             root.position.z = z;
             collidableObjects.push(root);
+
+            if (objUrl === 'obj/trash/trash_bag.obj'){
+                root.isCollectible = true;
+                root.collectedValue = 4;
+                trash.push(root);
+            }
+            else if (objUrl === 'obj/trash/bottle2.obj'){
+                root.isCollectible = true;
+                root.collectedValue = 2;
+                trash.push(root);
+
+            }
+            else if (objUrl === 'obj/trash/bottle1.obj'){
+                root.isCollectible = true;
+                root.collectedValue = 2;
+                trash.push(root);
+
+            }
+            else if (objUrl === 'obj/trash/bottle3.obj'){
+                root.isCollectible = true;
+                root.collectedValue = 2;
+                trash.push(root);
+
+            }
+
+            else if (objUrl === ' obj/field/poo.obj'){
+                root.isCollectible = true;
+                root.collectedValue = 1;
+                trash.push(root);
+
+            }
+
+            if(objUrl === 'obj/factory.obj'){
+                factory.push(root);
+            }
+
+           
+
+
             if (draggable)
                 objects.push(root);
             if ( objUrl === 'obj/vehicle/truck.obj')
                 truck.add(root);
             else
                 scene.add(root);
-        });
+        
+            
+        
+            });
+
     });
 
 }
@@ -632,7 +676,9 @@ document.addEventListener('keydown', function (event) {
         //controls.init();
         render();
     }
-    
+    if(event.keyCode == 88){
+        pickTrash();
+    }
  }, true);
 
 
@@ -755,10 +801,76 @@ setInterval(function(){
     {objectLoader('obj/trash/bottle1.mtl', 'obj/trash/bottle1.obj', rand_x, rand_z, rand_y, true);}
     if (rand == 3)
     {    objectLoader('obj/trash/bottle3.mtl', 'obj/trash/bottle3.obj', rand_x, rand_z, rand_y, true);}
- }, 3000);
+ }, 800);
  
  setInterval(function(){
      var rand_x = Math.floor(Math.random() * 100) + -170;
      var rand_z = Math.floor(Math.random() * 30) -40;
      objectLoader('obj/field/poo.mtl', 'obj/field/poo.obj', rand_x, rand_z, 0, true);
  }, 1000);
+
+
+ function pickTrash(){
+    const rays = [
+		new THREE.Vector3(0, 1, 1),
+		new THREE.Vector3(1, 1, 1),
+		new THREE.Vector3(1, 1, 0),
+		new THREE.Vector3(1, 1, -1),
+		new THREE.Vector3(0, 1, -1),
+		new THREE.Vector3(-1, 1, -1),
+		new THREE.Vector3(-1, 1, 0),
+		new THREE.Vector3(-1, 1, 1)
+	  ];
+        var distance = 30;
+
+    
+		
+		
+
+		var playerDirection = new THREE.Vector3();
+		player.getWorldDirection(playerDirection);
+
+        player.worldDirection = playerDirection;
+        
+        let addToTruck = false;
+		for (let i = 0; i < rays.length; i += 1) {
+			// We reset the raycaster to this direction
+			raycaster.set(player.position, rays[i]);
+			// Test if we intersect with any obstacle mesh
+			const intersects = raycaster.intersectObjects(trash, true);
+            // And disable that direction if we do
+			if (intersects.length > 0 && intersects[0].distance <= distance) {
+			  // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
+                addToTruck = true;
+                intersects[0].object.visible = false;
+
+	
+			}
+        }
+
+        if(addToTruck){
+            if(targetProxy.truckLoad <=17){
+                targetProxy.truckLoad +=3;
+    
+            }
+    
+        }
+
+        for (let i = 0; i < rays.length; i += 1) {
+			// We reset the raycaster to this direction
+			raycaster.set(player.position, rays[i]);
+			// Test if we intersect with any obstacle mesh
+			const intersects = raycaster.intersectObjects(factory, true);
+            // And disable that direction if we do
+			if (intersects.length > 0 && intersects[0].distance <= distance) {
+			  // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
+                targetProxy.unload = true;
+	
+			}
+        }
+			
+ }
+
+
+
+ 
