@@ -15,6 +15,7 @@ const objects = [];
 const collidableObjects = [];
 var collected = [];
 var trash = [];
+var factory = [];
 var player = new THREE.Object3D();
 var truck = new THREE.Object3D();
 
@@ -609,6 +610,10 @@ function objectLoader(mtlUrl, objUrl, x, z, y = 0.0, draggable = false, rotation
 
             }
 
+            if(objUrl === 'obj/factory.obj'){
+                factory.push(root);
+            }
+
            
 
 
@@ -851,7 +856,18 @@ setInterval(function(){
     
         }
 
-
+        for (let i = 0; i < rays.length; i += 1) {
+			// We reset the raycaster to this direction
+			raycaster.set(player.position, rays[i]);
+			// Test if we intersect with any obstacle mesh
+			const intersects = raycaster.intersectObjects(factory, true);
+            // And disable that direction if we do
+			if (intersects.length > 0 && intersects[0].distance <= distance) {
+			  // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
+                targetProxy.unload = true;
+	
+			}
+        }
 			
  }
 

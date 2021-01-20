@@ -87,6 +87,8 @@ var targetProxy = new Proxy(GLOBAL_SERVICE_PROVIDER, {
             
             
             GLOBAL_SERVICE_PROVIDER.truckLoad = 0;
+            truckCapacitySpan.innerHTML = String(0) + "/" + 20;
+
           }
           if(key == "truckLoad"){
             truckCapacitySpan.innerHTML = String(value) + "/" + 20;
