@@ -543,17 +543,17 @@ function onWindowResize() {
 
 }
 
-function loadApartment(x = 0, z = 0, type = 1, floor = 1, y = 0.0) {
+function loadApartment(x = 0.0, z = 0.0, type = 1, floor = 1, rot=-1.0, y = 0.0) {
 
     type = type.toString();
 
-    objectLoader('obj/apartment/' + type + '/bot.mtl', 'obj/apartment/' + type + '/bot.obj', x, z, y + 0);
+    objectLoader('obj/apartment/' + type + '/bot.mtl', 'obj/apartment/' + type + '/bot.obj', x, z, y + 0, false, rot);
 
     var i = 1;
     for (; i < floor; i++)
-        objectLoader('obj/apartment/' + type + '/mid.mtl', 'obj/apartment/' + type + '/mid.obj', x, z, y + 3.417 * i);
+        objectLoader('obj/apartment/' + type + '/mid.mtl', 'obj/apartment/' + type + '/mid.obj', x, z, y + 3.417 * i, false, rot);
 
-    objectLoader('obj/apartment/' + type + '/top.mtl', 'obj/apartment/' + type + '/top.obj', x, z, y + 3.417 * floor);
+    objectLoader('obj/apartment/' + type + '/top.mtl', 'obj/apartment/' + type + '/top.obj', x, z, y + 3.417 * floor, false, rot);
 
 }
 
