@@ -382,7 +382,7 @@ function init() {
     objectLoader('obj/trash/trash_dumpster_open.mtl', 'obj/trash/trash_dumpster_open.obj', -5, 15, 0);
     objectLoader('obj/character/character.mtl', 'obj/character/character.obj', -10, 15, 0, true);
 
-    objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, true);
+    //objectLoader('obj/vehicle/truck.mtl', 'obj/vehicle/truck.obj', -20, 15, 0, true);
 	
 	
 	
