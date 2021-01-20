@@ -7,6 +7,7 @@
 		GLOBAL_SERVICE_PROVIDER = {
 			lightingIntensity:1,
 			energy:200,
+			truckLoad:0
 		};
 	</script>
 	<script src="http://threejs.org/build/three.js"></script>
@@ -77,6 +78,9 @@ body
 		</ul>
 	</div>
 	
+	<div id="truck-info">
+		<h2><b>Truck capacity:</b> <span id="truck-capacity-span"> 0/20</span></h2>
+	</div>
 
 	<script type = "module" src="main.js"></script>
 	<script src="ui.js"></script>
