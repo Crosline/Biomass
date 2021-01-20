@@ -107,4 +107,3 @@ var targetProxy = new Proxy(GLOBAL_SERVICE_PROVIDER, {
 });
 
 
-targetProxy.unload = true;
